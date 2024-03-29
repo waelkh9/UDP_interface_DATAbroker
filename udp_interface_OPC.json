@@ -1,0 +1,365 @@
+[
+    {
+        "id": "c2dd626a86cc6cc4",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a5a23c5fa5c82f4d",
+        "type": "udp in",
+        "z": "c2dd626a86cc6cc4",
+        "name": "temperature",
+        "iface": "",
+        "port": "48569",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 70,
+        "y": 120,
+        "wires": [
+            [
+                "3008c509ada688e9",
+                "c331e94f5129300c",
+                "8efa1a3497c7a8e7"
+            ]
+        ]
+    },
+    {
+        "id": "c331e94f5129300c",
+        "type": "string",
+        "z": "c2dd626a86cc6cc4",
+        "name": "temperature",
+        "methods": [
+            {
+                "name": "between",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "temperature="
+                    },
+                    {
+                        "type": "str",
+                        "value": "°C"
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 230,
+        "y": 60,
+        "wires": [
+            [
+                "8698d9f22991fb89",
+                "9d39cc5a1491fbe1"
+            ]
+        ]
+    },
+    {
+        "id": "8698d9f22991fb89",
+        "type": "debug",
+        "z": "c2dd626a86cc6cc4",
+        "name": "temperature",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 470,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "8efa1a3497c7a8e7",
+        "type": "string",
+        "z": "c2dd626a86cc6cc4",
+        "name": "humidity",
+        "methods": [
+            {
+                "name": "between",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "\"temperature= 19.52°C humidity="
+                    },
+                    {
+                        "type": "msg",
+                        "value": "%"
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 100,
+        "y": 260,
+        "wires": [
+            [
+                "d1787efa3cdc78e5",
+                "41b46193d88aea70"
+            ]
+        ]
+    },
+    {
+        "id": "d1787efa3cdc78e5",
+        "type": "debug",
+        "z": "c2dd626a86cc6cc4",
+        "name": "humidity",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "19896d575389fc1e",
+        "type": "function",
+        "z": "c2dd626a86cc6cc4",
+        "name": "set temperature as global variable",
+        "func": "global.set(\"temperature\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 80,
+        "wires": [
+            [
+                "7712b3f75d46dea3"
+            ]
+        ]
+    },
+    {
+        "id": "2a4e877502fcd289",
+        "type": "function",
+        "z": "c2dd626a86cc6cc4",
+        "name": "set as global variable",
+        "func": "global.set(\"humidity\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 200,
+        "wires": [
+            [
+                "12753bb56e15c445"
+            ]
+        ]
+    },
+    {
+        "id": "046d88dfb617909c",
+        "type": "inject",
+        "z": "c2dd626a86cc6cc4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 400,
+        "wires": [
+            [
+                "edb2fc8137368439"
+            ]
+        ]
+    },
+    {
+        "id": "edb2fc8137368439",
+        "type": "function",
+        "z": "c2dd626a86cc6cc4",
+        "name": "function 1",
+        "func": "flow.set('Temperature', global.get(\"temperature\"));\nflow.set('Humidity', global.get(\"humidity\"));\nmsg.payload = [\n\nflow.get('Temperature'),\nflow.get('Humidity')\n\n];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 400,
+        "wires": [
+            [
+                "aadf68330d6b8c5e"
+            ]
+        ]
+    },
+    {
+        "id": "12753bb56e15c445",
+        "type": "debug",
+        "z": "c2dd626a86cc6cc4",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "aadf68330d6b8c5e",
+        "type": "debug",
+        "z": "c2dd626a86cc6cc4",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "7712b3f75d46dea3",
+        "type": "debug",
+        "z": "c2dd626a86cc6cc4",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "a3cae2a4cd7d398b",
+        "type": "opcua-compact-server",
+        "z": "c2dd626a86cc6cc4",
+        "port": 54840,
+        "endpoint": "",
+        "productUri": "",
+        "acceptExternalCommands": true,
+        "maxAllowedSessionNumber": 10,
+        "maxConnectionsPerEndpoint": 10,
+        "maxAllowedSubscriptionNumber": 100,
+        "alternateHostname": "",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": true,
+        "allowAnonymous": true,
+        "individualCerts": false,
+        "isAuditing": false,
+        "serverDiscovery": true,
+        "users": [],
+        "xmlsetsOPCUA": [],
+        "publicCertificateFile": "",
+        "privateCertificateFile": "",
+        "registerServerMethod": "1",
+        "discoveryServerEndpointUrl": "opc.tcp://localhost:54840",
+        "capabilitiesForMDNS": "",
+        "maxNodesPerRead": 1000,
+        "maxNodesPerWrite": 1000,
+        "maxNodesPerHistoryReadData": 100,
+        "maxNodesPerBrowse": 3000,
+        "maxBrowseContinuationPoints": 10,
+        "maxHistoryContinuationPoints": 10,
+        "delayToInit": 1000,
+        "delayToClose": 200,
+        "serverShutdownTimeout": 100,
+        "addressSpaceScript": "function constructAlarmAddressSpace(server, addressSpace, eventObjects, done) {\n  // server = the created node-opcua server\n  // addressSpace = address space of the node-opcua server\n  // eventObjects = add event variables here to hold them in memory from this script\n\n  // internal sandbox objects are:\n  // node = the compact server node,\n  // coreServer = core compact server object for debug and access to NodeOPCUA\n  // this.sandboxNodeContext = node context node-red\n  // this.sandboxFlowContext = flow context node-red\n  // this.sandboxGlobalContext = global context node-red\n  // this.sandboxEnv = env variables\n  // timeout and interval functions as expected from nodejs\n\n  \n  const opcua = coreServer.choreCompact.opcua;\n  const LocalizedText = opcua.LocalizedText;\n  const namespace = addressSpace.getOwnNamespace();\n\n  const Variant = opcua.Variant;\n  const DataType = opcua.DataType;\n  const DataValue = opcua.DataValue;\n\n  var flexServerInternals = this;\n\n  \n  const rootFolder = addressSpace.findNode(\"RootFolder\");\n\n  this.sandboxFlowContext.set(\"Humidity\", false);\n  this.sandboxFlowContext.set(\"Temperature\", false);\n\n  const sensor_Data = namespace.addFolder(rootFolder.objects, {\n    \"browseName\": \"Sensor_data\"\n  });\n  const temperature = namespace.addFolder(sensor_Data, {\n    \"browseName\": \"temperature\"\n  });\n  const humidity = namespace.addFolder(sensor_Data, {\n    \"browseName\": \"humidity\"\n  });\n  const temperature_float = namespace.addFolder(temperature, {\n    \"browseName\": \"Float_C\"\n  });\n  const humidity_float = namespace.addFolder(humidity, {\n    \"browseName\": \"humidity_%\"\n  });\n  const temperature_var = namespace.addVariable({\n    \"organizedBy\": temperature_float,\n    \"browseName\": \"temperature\",\n    \"nodeId\": \"ns=1;s=Temperature_value\",\n    \"dataType\": \"Double\",\n    \"value\": {\n      \"get\": function () {\n        return new Variant({\n          \"dataType\": DataType.Double,\n          \"value\": flexServerInternals.sandboxFlowContext.get(\"Temperature\")\n        });\n      },\n      \"set\": function (Variant) {\n        flexServerInternals.sandboxFlowContext.set(\n          \"Temperature\",\n          Variant.value\n        );\n        return opcua.StatusCodes.Good;\n      }\n    }\n  });\n  const humidity_var = namespace.addVariable({\n    \"organizedBy\": humidity_float,\n    \"browseName\": \"Humidity\",\n    \"nodeId\": \"ns=1;s=Humidity_value\",\n    \"dataType\": \"Double\",\n    \"value\": {\n      \"get\": function () {\n        return new Variant({\n          \"dataType\": DataType.Double,\n          \"value\": flexServerInternals.sandboxFlowContext.get(\"Humidity\")\n        });\n      },\n      \"set\": function (Variant) {\n        flexServerInternals.sandboxFlowContext.set(\n          \"Humidity\",\n          Variant.value\n        );\n        return opcua.StatusCodes.Good;\n      }\n    }\n  });\n  done();\n}",
+        "x": 580,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3008c509ada688e9",
+        "type": "debug",
+        "z": "c2dd626a86cc6cc4",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "41b46193d88aea70",
+        "type": "function",
+        "z": "c2dd626a86cc6cc4",
+        "name": "convert humidity to a number",
+        "func": "msg.payload = parseFloat(msg.payload); // Convert string to float\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 220,
+        "wires": [
+            [
+                "2a4e877502fcd289"
+            ]
+        ]
+    },
+    {
+        "id": "9d39cc5a1491fbe1",
+        "type": "function",
+        "z": "c2dd626a86cc6cc4",
+        "name": "Convert temperature to number",
+        "func": "msg.payload = parseFloat(msg.payload); // Convert string to float\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 20,
+        "wires": [
+            [
+                "19896d575389fc1e"
+            ]
+        ]
+    }
+]
