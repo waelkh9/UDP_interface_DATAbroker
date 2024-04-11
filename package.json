@@ -1,0 +1,12 @@
+{
+    "name": "udp_interface",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "dependencies": {},
+    "node-red": {
+        "settings": {
+            "flowFile": "upd_interdace_broker.json",
+            "credentialsFile": "upd_interdace_broker_cred.json"
+        }
+    }
+}
